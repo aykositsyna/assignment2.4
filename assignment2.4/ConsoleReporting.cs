@@ -16,14 +16,19 @@ namespace assignment2._4
                 Console.WriteLine(typeInfo.Name);
 
 
-                string separator = typeInfo.GetCustomAttributes(true).OfType<HorizontalAlignmentAttribute>().FirstOrDefault() != null
-                    ? " | "
-                    : "\n";
+                string separator = typeInfo
+                    .GetCustomAttributes(true)
+                    .OfType<HorizontalAlignmentAttribute>()
+                    .FirstOrDefault() != null
+                        ? " | "
+                        : "\n";
                 
                 foreach ( var field in typeInfo.GetFields())
                 {
-                    NotPrintableAttribute notPrintableAttribute =
-                        field.GetCustomAttributes(true).OfType<NotPrintableAttribute>().FirstOrDefault();
+                    NotPrintableAttribute notPrintableAttribute = field
+                        .GetCustomAttributes(true)
+                        .OfType<NotPrintableAttribute>()
+                        .FirstOrDefault();
                     if (notPrintableAttribute == null)
                     {
                         Console.Write($"{field.Name}: {field.GetValue(obj)}{separator}");
