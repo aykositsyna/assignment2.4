@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace assignment2._4
 {
+    [AttributeUsage(AttributeTargets.Class)]
     internal class HorizontalAlignmentAttribute : Attribute
     {
 
