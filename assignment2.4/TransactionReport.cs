@@ -13,7 +13,7 @@ namespace assignment2._4
         public string SenderID = "AAA 2313";
         [NotPrintable]
         public string RecipientID = "BGH 123HT";
-        public int sum = 3230;
+        public int Sum = 3230;
         public DateTime TransactionTime = DateTime.Now;
 
     }
