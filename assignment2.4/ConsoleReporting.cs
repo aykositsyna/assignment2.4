@@ -10,18 +10,13 @@ namespace assignment2._4
     {
         public static void Parse(List<Object> objects) 
         {
-            int maxLength = 0;
             foreach (Object obj in objects)
             {
+                int maxLength = 0;
+                string printedText = "";
                 Type typeInfo = obj.GetType();
-                maxLength = Math.Max(typeInfo.Name.Length, maxLength);
                 string headerName = typeInfo.Name;
-                //Console.WriteLine(HeaderCreator(maxLength, headerName, "="));
-                Console.Write("=======");
-                Console.Write(typeInfo.Name);
-                Console.WriteLine("=======");
-
-
+        
                 string separator = typeInfo
                     .GetCustomAttributes(true)
                     .OfType<HorizontalAlignmentAttribute>()
@@ -31,25 +26,34 @@ namespace assignment2._4
                 
                 foreach ( var field in typeInfo.GetFields())
                 {
+                    string newTextLine = "";
                     NotPrintableAttribute notPrintableAttribute = field
                         .GetCustomAttributes(true)
                         .OfType<NotPrintableAttribute>()
                         .FirstOrDefault();
                     if (notPrintableAttribute == null)
                     {
-                        Console.Write($"{field.Name}: {field.GetValue(obj)}{separator}");
+                        newTextLine = $"{field.Name}: {field.GetValue(obj)}{separator}";
+                        printedText += newTextLine;
+                        maxLength = separator == " | "
+                            ? maxLength + newTextLine.Length
+                            : Math.Max(maxLength, newTextLine.Length);
                     }
                 }
-                headerName = "";
-                Console.WriteLine();
-                Console.WriteLine(HeaderCreator(maxLength, headerName));
+                
+                printedText =
+                    HeaderCreator(maxLength, headerName, "=") +
+                    printedText + (separator == " | " ? "\n" : "") +
+                    HeaderCreator(maxLength) + "\n";
+                Console.WriteLine(printedText);
             }
         }
 
-        private static string HeaderCreator(int length, string header, string sChar = "-")
+        private static string HeaderCreator(int length, string header = "", string sChar = "-")
         {
             header = header == "" ? "" : " " + header + " ";
             int separatorLength = (length - header.Length) / 2;
+            separatorLength = separatorLength > 0 ? separatorLength : 1;
             string separator = String.Join("", Enumerable.Repeat(sChar, separatorLength).ToArray());
             return separator + header + separator + "\n";
         }
